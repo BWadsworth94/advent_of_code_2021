@@ -10,6 +10,7 @@
   [input]
   (loop [input input
          acc 0]
-    (if (nil? (second input))
-      acc
-      (recur (rest input) (if (pos? (- (second input) (first input))) (+ 1 acc) acc)))))
+    (let [[f s] input]
+      (if (nil? s)
+        acc
+        (recur (rest input) (if (> s f) (+ 1 acc) acc))))))
