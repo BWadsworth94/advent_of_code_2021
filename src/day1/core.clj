@@ -15,6 +15,11 @@
         acc
         (recur (rest input) (if (> s f) (+ 1 acc) acc))))))
 
+
+
 (defn part-2-count-increases
   [input]
-  )
+  (->> input
+       (partition 3 1)
+       (map #(apply + %))
+       part-1-count-increases))
