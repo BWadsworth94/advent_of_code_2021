@@ -6,7 +6,7 @@
        (clojure.string/split-lines)
        (map #(Integer/parseInt %))))
 
-(defn count-increases
+(defn part-1-count-increases
   [input]
   (loop [input input
          acc 0]
@@ -14,3 +14,7 @@
       (if (nil? s)
         acc
         (recur (rest input) (if (> s f) (+ 1 acc) acc))))))
+
+(defn part-2-count-increases
+  [input]
+  )
