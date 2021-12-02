@@ -2,7 +2,7 @@
   (:require [clojure.java.io]))
 
 (def input
-  (->> (slurp "src/day1/input.txt")
+  (->> (slurp "resources/day1/input.txt")
        (clojure.string/split-lines)
        (map #(Integer/parseInt %))))
 
