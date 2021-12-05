@@ -1,31 +1,50 @@
 (ns day3.core
   (:require [clojure.string :as s]))
 
-(def input
-  (-> "resources/day3/input.txt"
-      slurp
-      s/split-lines))
+(def report
+  (slurp "resources/day3/input.txt"))
+
+(defn report->records
+  [r]
+  (s/split-lines r))
 
 (defn transpose
-  [vectors]
-  (apply mapv vector vectors))
+  [records]
+  (apply mapv vector records))
 
-(defn get-num
-  [input most-common-fn]
-  (->> input
-       (map #(s/split % #"")) ;; ["1001"] -> ["1" "0" "0" "1"]
-       (map (partial map #(s/replace % #"0" "-1"))) ;; ["1" "0" "0" "1"] -> ["1" "-1" "-1" "1"]
-       (map (partial map #(Integer/parseInt %))) ;; str to int
-       transpose ;; [[1 0 1] [1 1 0]] -> [[1 1] [0 1] [1 0]]
-       (map #(apply + %)) ;; add the vectors
-       (map (fn [b] (if (most-common-fn b) 1 0))) ;; if adds to pos or negative give 1 or 0
-       s/join ;; smash the vector into a string
-       (#(Integer/parseInt % 2)))) ;; convert it to dec
+(defn zero-most-common
+  [freqs]
+  (if (> (get freqs \0 0) (get freqs \1 0)) true false))
+
+(def one-most-common
+  (complement zero-most-common))
+
+(defn ?-is-most-common
+  [fn records]
+  (->> records
+       transpose
+       (map frequencies)
+       (map fn)))
+
+(defn binary-vector->integer
+  [vector]
+  (-> vector
+      s/join
+      (#(Integer/parseInt % 2))))
+
+(defn boolean->bit
+  [bool]
+  (if bool 1 0))
 
 (defn part-1
-  [input]
-  {:gamma (get-num input pos-int?)
-   :epsilon (get-num input (complement pos-int?))})
-
-(comment
-  (part-1 input))
+  []
+  (let [records (->> report report->records)
+        gamma (->> records
+                   (?-is-most-common one-most-common)
+                   (map boolean->bit)
+                   (#(binary-vector->integer %)))
+        epsilon (->> records
+                     (?-is-most-common zero-most-common)
+                     (map boolean->bit)
+                     (#(binary-vector->integer %)))]
+    (* gamma epsilon)))
