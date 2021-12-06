@@ -48,3 +48,8 @@
                      (map boolean->bit)
                      (#(binary-vector->integer %)))]
     (* gamma epsilon)))
+
+(defn part-2
+  [input]
+  (->> ["1001" "1101"]
+       (?-is-most-common one-most-common)))
