@@ -34,7 +34,7 @@
     (clojure.string/split #",")
     (#(map (fn [s] (Integer/parseInt s)) %))
     frequencies
-    (part-1 80))
+    (part-1 256))
 
 
 ;; (t/deftest day-2-test
